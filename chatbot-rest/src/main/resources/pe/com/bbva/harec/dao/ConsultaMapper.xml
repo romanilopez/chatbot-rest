@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pe.com.bbva.harec.dao.ConsultaMapper" >
+
+	<select id="cargarConsulta" resultType="pe.com.bbva.harec.model.Consulta">
+<!-- 	    SELECT -->
+<!-- 			RESULTADO as estado, -->
+<!-- 			MOMENTO as fecha -->
+<!-- 	    FROM -->
+<!-- 	    	${schema}.REQ_BITACORA WHERE rownum <![CDATA[ < ]]> 100 -->
+	    	
+	    SELECT VALOR.ORDEN orden
+			,VALOR.NOMBRE nombre
+			,TO_CHAR(MIN(BITA.MOMENTO), 'dd-MM-yyyy HH:mi:ss') fecha
+			,CASE 
+				WHEN BITA.ESTADO_TRACKING IS NOT NULL
+					THEN 1
+				ELSE 0
+				END prende
+		FROM ${schema}.CFG_VALOR VALOR
+		INNER JOIN ${schema}.CFG_LISTA LISTA ON LISTA.ID = VALOR.LISTA
+		LEFT JOIN (
+			SELECT 
+				EST.ID
+				,BIT.MOMENTO
+				,EST.ESTADO_TRACKING
+			FROM ${schema}.REQ_BITACORA BIT
+			INNER JOIN ${schema}.REQ_ESTADO EST ON EST.ID = BIT.ID_DESPUES
+			INNER JOIN ${schema}.REQ_REQUERIMIENTO REQ ON REQ.ID = BIT.REQUERIMIENTO
+			WHERE 
+				REQ.NUMERO = 'BR-00119265'
+				AND BIT.EVENTO_TIPO = ( SELECT ID FROM ${schema}.CFG_VALOR WHERE CODIGO = 'TRANS' )
+			) BITA ON BITA.ESTADO_TRACKING = VALOR.ID
+		WHERE LISTA.CODIGO = 'ESTADO_TRACKING'
+		GROUP BY VALOR.ORDEN ,VALOR.NOMBRE ,BITA.MOMENTO ,BITA.ESTADO_TRACKING
+		ORDER BY VALOR.ORDEN
+	</select>	
+    
+</mapper>
