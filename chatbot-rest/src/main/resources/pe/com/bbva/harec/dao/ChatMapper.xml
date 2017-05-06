@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pe.com.bbva.harec.dao.ChatMapper" >
+
+	<select id="consultarParticipantes" resultType="pe.com.bbva.harec.model.Participante">
+		<!-- ${schema}. -->
+	    SELECT session_id sessionId,
+	           usuario,
+	           rol
+		FROM   chat_participantes
+	</select>
+	<select id="consultarMensajes" resultType="pe.com.bbva.harec.model.Mensaje">
+		<!-- ${schema}. -->
+	    SELECT session_id sessionId,
+	           usuario,
+	           mensaje,
+	           fecha
+		FROM   chat_mensajes
+		order by fecha
+	</select>	
+    
+    <insert id="registrarMensaje" parameterType="pe.com.bbva.harec.model.Mensaje">
+  		insert into chat_mensajes (session_id, usuario, mensaje, fecha)
+  		values (#{sessionId}, #{usuario}, #{mensaje}, CURRENT_DATE)
+	</insert>
+    <insert id="registrarParticipante" parameterType="pe.com.bbva.harec.model.Participante">
+  		insert into chat_participantes (session_id, usuario, rol)
+  		values (#{sessionId}, #{usuario}, #{rol})
+	</insert>
+</mapper>
