@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import pe.com.bbva.harec.model.Consulta;
-import pe.com.bbva.harec.model.Respuesta;
+import pe.com.bbva.harec.model.Peticion;
+import pe.com.bbva.harec.model.RespuestaChatbot;
+import pe.com.bbva.harec.model.Value;
 import pe.com.bbva.harec.service.ConsultaService;
 
 @RestController
@@ -23,20 +24,15 @@ public class ConsultaController {
 	ConsultaService consultaService;
 	
 	@RequestMapping(value = "/demo", method = RequestMethod.GET)
-	public Respuesta obtenerConsulta() {
-		List<Consulta> consultas = new ArrayList<Consulta>();//consultaService.obtenerConsulta();
-		
-		Respuesta resultado = new Respuesta();
-		
-		if(consultas.isEmpty()){
-			resultado.setCodigo("0");
-			resultado.setResultado("No se encontro resultado");
-		}else{
-			resultado.setCodigo("1");
-			resultado.setResultado(consultas);
-		}
-		
-		
+	public RespuestaChatbot obtenerConsulta(Peticion peticion) {
+		RespuestaChatbot resultado = new RespuestaChatbot();
+		resultado.setType("menu");
+		resultado.setInfo("¿Que opcion quieres realizar?");
+		List<Value> values = new ArrayList<Value>();
+		values.add(new Value("reclamos", "Mi cuenta ha sido cancelada"));
+		values.add(new Value("consultas", "¿Como realizo un prestamo hipotecario?"));
+		resultado.setValue(values);
+		resultado.setScope("1");
 		return resultado;
 	}
 }

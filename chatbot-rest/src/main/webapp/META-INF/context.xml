@@ -22,7 +22,7 @@
   <Resource name="jdbc/APP_HARECL" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
                username="postgres" password="" driverClassName="org.postgresql.Driver"
-               url="jdbc:postgresql://172.168.168.168.12:5432/Reclamos"/>
+               url="jdbc:postgresql://172.168.168.12:5432/Reclamos "/>
   <!-- Resource name="jdbc/ORA_Biiwx001" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
                username="ldap" password="ldap" driverClassName="oracle.jdbc.OracleDriver"
